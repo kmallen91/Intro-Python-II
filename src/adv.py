@@ -1,5 +1,15 @@
 from room import Room
 from player import Player
+from item import Item
+
+
+# Items
+item = {
+    'sword': Item('sword', 'Pointy!'),
+    'cup': Item('cup', 'Discarded cup'),
+    'helmet': Item('helmet', 'Armor for your head!'),
+    'coins': Item('coins', 'Shiny!')
+}
 
 # Declare all the rooms
 
@@ -8,7 +18,7 @@ room = {
                      "North of you, the cave mount beckons"),
 
     'foyer':    Room("Foyer", """Dim light filters in from the south. Dusty
-passages run north and east."""),
+passages run north and east.""", items={item['sword'], item['coins']}),
 
     'overlook': Room("Grand Overlook", """A steep cliff appears before you, falling
 into the darkness. Ahead to the north, a light flickers in
@@ -38,6 +48,7 @@ room['narrow'].n_to = room['treasure']
 
 room['treasure'].s_to = room['narrow']
 
+
 #
 # Main
 #
@@ -61,22 +72,29 @@ room_name = current_room.name
 room_desc = current_room.description
 directions = ['n', 's', 'e', 'w']
 
+
 while True:
+    items = current_room.items
     print(f'---------------------------------------------------------------------------')
     print(f'{player1.name} is currently in the {current_room.name}.')
     print(f'{current_room.description}')
+    if len(items) > 0:
+        for item in items:
+            print(
+                f'You find {item.name} in the room. ')
+    print(f'Use "get" to pick items up. Use "drop" to drop items.')
     print(f'---------------------------------------------------------------------------')
     cmd = input(
         f'Please select a direction ([N], [E], [S], [W]) or [Q] to quit  ')
-    if cmd in directions:
-        if getattr(current_room, f'{cmd}_to') == None:
+    if cmd.lower() in directions:
+        if getattr(current_room, f'{cmd.lower()}_to') == None:
             print(
                 f'---------------------------------------------------------------------------')
             print('There is nothing in that direction')
             print(
                 f'---------------------------------------------------------------------------')
         else:
-            current_room = getattr(current_room, f'{cmd}_to')
+            current_room = getattr(current_room, f'{cmd.lower()}_to')
 
     elif cmd == "q":
         print('Goodbye!')
@@ -84,4 +102,3 @@ while True:
     else:
         print(
             f'Command not found, please select a direction ([N], [E], [S], [W]) or [Q] to quit   ')
-        print(cmd)
