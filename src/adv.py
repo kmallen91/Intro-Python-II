@@ -6,7 +6,7 @@ from item import Item
 # Items
 item = {
     'sword': Item('sword', 'Pointy!'),
-    'cup': Item('cup', 'Discarded cup'),
+    'cup': Item('cup', "It's a rusty cup."),
     'helmet': Item('helmet', 'Armor for your head!'),
     'coins': Item('coins', 'Shiny!')
 }
@@ -22,14 +22,14 @@ passages run north and east.""", items={item['sword'], item['coins']}),
 
     'overlook': Room("Grand Overlook", """A steep cliff appears before you, falling
 into the darkness. Ahead to the north, a light flickers in
-the distance, but there is no way across the chasm."""),
+the distance, but there is no way across the chasm.""", items={item['helmet']}),
 
     'narrow':   Room("Narrow Passage", """The narrow passage bends here from west
-to north. The smell of gold permeates the air."""),
+to north. The smell of gold permeates the air.""", ),
 
     'treasure': Room("Treasure Chamber", """You've found the long-lost treasure
 chamber! Sadly, it has already been completely emptied by
-earlier adventurers. The only exit is to the south."""),
+earlier adventurers. The only exit is to the south.""", items={item['cup']}),
 }
 
 
@@ -81,8 +81,8 @@ while True:
     if len(items) > 0:
         for item in items:
             print(
-                f'You find {item.name} in the room. ')
-    print(f'Use "get" to pick items up. Use "drop" to drop items.')
+                f'You find {item.name} in the room. {item.description} ')
+        print(f'Use "get" to pick items up. Use "drop" to drop items.')
     print(f'---------------------------------------------------------------------------')
     cmd = input(
         f'Please select a direction ([N], [E], [S], [W]) or [Q] to quit  ')
