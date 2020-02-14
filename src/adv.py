@@ -84,7 +84,7 @@ while True:
     current_room.display_items(items)
     print(f'---------------------------------------------------------------------------')
     cmd = input(
-        f'Please select a direction ([N], [E], [S], [W]) or [Q] to quit  ').lower().split(' ')
+        f'Please select a direction ([N], [E], [S], [W]), [I] for inventory or [Q] to quit  ').lower().split(' ')
 
     if len(cmd) == 1:
         if cmd[0] in directions:
@@ -92,18 +92,33 @@ while True:
         elif cmd[0] == "q":
             print('Goodbye!')
             break
+        elif cmd[0] == "i":
+            if len(inventory) == 0:
+                print(
+                    f'---------------------------------------------------------------------------')
+                print(f'You have no items!')
+            else:
+                inv_items = []
+                for item in inventory:
+                    getattr(item, 'name', 'description')
+                    inv_items.append(item.name)
+                print(
+                    f'---------------------------------------------------------------------------')
+                print(f'Your inventory contains {inv_items}')
         else:
             print(
-                f'Command not found, please select a direction ([N], [E], [S], [W]) or [Q] to quit   ')
+                f'Command not found, please select a direction ([N], [E], [S], [W]), [I] for inventory or [Q] to quit   ')
 
     elif len(cmd) == 2 and cmd[0] in actions:
         item = cmd[1]
-        print(item)
-        if len(inventory) > 0:
-            print(inventory.index(item))
-        if len(items) > 0:
-            if 'get' in cmd[0]:
-                player1.get_item(current_room, inventory, listed_items[item])
+        if len(items) > 0 and 'get' in cmd[0]:
+            player1.get_item(current_room, inventory, listed_items[item])
+        elif 'drop' in cmd[0]:
+            player1.drop_item(current_room, inventory, listed_items[item])
         else:
-            if 'drop' in cmd[0] and item in inventory.index(item).name:
-                player1.drop_item(current_room, inventory, listed_items[item])
+            print('Item not found!')
+    else:
+        print(
+            f'---------------------------------------------------------------------------')
+        print(
+            f'Command not found, please select a direction ([N], [E], [S], [W]), [I] for inventory or [Q] to quit   ')

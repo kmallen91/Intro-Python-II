@@ -25,13 +25,21 @@ class Player:
     def get_item(self, current_room, inventory, item):
         self.inventory.append(item)
         self.current_room.items.remove(item)
+        print(
+            f'---------------------------------------------------------------------------')
         print(f'Inventory now contains {self.inventory[-1]}')
 
     def drop_item(self, current_room, inventory, item):
-        current_item = getattr(item, 'name', 'description')
-        dropped = self.inventory.pop(item)
-        self.current_room.items.append(item)
-        print(f'You have dropped {dropped.name}')
+        items = []
+        for thing in inventory:
+            getattr(thing, 'name', 'description')
+            items.append(thing.name)
+        if item.name in items:
+            self.current_room.items.append(item)
+            self.inventory.remove(item)
+        print(
+            f'---------------------------------------------------------------------------')
+        print(f'You have dropped {item.name}')
 
     def display_current_room(self, name, current_room):
         print(f'{self.name} is currently in the {self.current_room.name}.')
