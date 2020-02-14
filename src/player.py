@@ -3,9 +3,36 @@
 
 
 class Player:
-    def __init__(self, name, current_room, inventory={}):
+    def __init__(self, name, current_room, inventory=[]):
         self.name = name
         self.current_room = current_room
+        self.inventory = inventory
 
     def __str__(self):
         return f'{self.name} {self.current_room}'
+
+    def travel(self, direction):
+        next_room = getattr(self.current_room, f'{direction}_to')
+        if next_room is not None:
+            self.current_room = next_room
+        else:
+            print(
+                f'---------------------------------------------------------------------------')
+            print('There is nothing in that direction')
+            print(
+                f'---------------------------------------------------------------------------')
+
+    def get_item(self, current_room, inventory, item):
+        self.inventory.append(item)
+        self.current_room.items.remove(item)
+        print(f'Inventory now contains {self.inventory[-1]}')
+
+    def drop_item(self, current_room, inventory, item):
+        current_item = getattr(item, 'name', 'description')
+        dropped = self.inventory.pop(item)
+        self.current_room.items.append(item)
+        print(f'You have dropped {dropped.name}')
+
+    def display_current_room(self, name, current_room):
+        print(f'{self.name} is currently in the {self.current_room.name}.')
+        print(f'{self.current_room.description}')
